@@ -2,7 +2,9 @@ const Post = require('../models/Post');
 
 module.exports = {
     async index(req, res) {
+        const post = await Post.find().sort('-createdAt');
 
+        return res.json(posts);
     },
 
     async store(req, res) {
