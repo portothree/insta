@@ -15,7 +15,7 @@ module.exports = {
             description,
             hashtags,
             image
-        })
+        });
 
         return res.json(post);
     }
