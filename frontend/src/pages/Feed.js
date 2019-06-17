@@ -15,6 +15,8 @@ class Feed extends Component {
     };
 
     async componentDidMount() {
+        this.registerToSocket();
+
         const response = await api.get('posts');
 
         this.setState({ feed: response.data })
@@ -25,6 +27,14 @@ class Feed extends Component {
     
         socket.on('post', newPost => {
           this.setState({ feed: [newPost, ...this.state.feed] })
+        })
+
+        socket.on('like', likedPost => {
+            this.setState({
+                feed: this.state.feed.map(post => 
+                    post._id == likedPost._id ? likedPost : post
+                )
+            })
         })
       }
 
