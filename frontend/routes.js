@@ -4,8 +4,8 @@ import { Switch, Route } from 'react-router-dom';
 function Routes() {
     return (
         <Switch>
-            <Route path="/" component={Feed} />
-            <Route path="/" component={New}  />
+            <Route path="/" component={} />
+            <Route path="/new" component={}  />
         </Switch>
     );
 }
