@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import api from '../services/api';
+import io from 'socket.io-client';
 
 import './Feed.css'
 
@@ -8,40 +10,51 @@ import comment from '../assets/comment.svg';
 import send from '../assets/send.svg';
 
 class Feed extends Component {
+    state = {
+        feed: [],
+    };
+
+    async componentDidMount() {
+        const response = await api.get('posts');
+
+        this.setState({ feed: response.data })
+    }
+
   render() {
     return (
         <section id="post-list">
-            <article>
+            { this.state.feed.map(post => (
+                <article key={post._id}>
                 <header>
-                    <div className="user-info">
-                        <span>Autor do post</span>
-                        <span className="place">Local</span>
-                    </div>
-
-                    <img src={more} alt="Mais" />
+                  <div className="user-info">
+                    <span>{post.author}</span>
+                    <span className="place">{post.place}</span>
+                  </div>
+    
+                  <img src={more} alt="Mais" />
                 </header>
-
-                <img src='http://localhost:3333/files/example.jpg' alt="" />
-
+    
+                <img src={`http://localhost:3333/files/${post.image}`} alt="" />
+                
                 <footer>
-                    <div className="actions">
-                        <button>
-                            <img src={like} alt="" />
-                        </button>
-
-                        <img src={comment} alt="" />
-                        <img src={send} alt="" />
-                    </div>
-
-                    <strong>500 Curtidas</strong>
-
-                    <p>
-                        Descrição
-                        <span>#iLikeIt</span>
-                    </p>
+                  <div className="actions">
+                    <button onClick={() => this.handleLike(post._id)}>
+                      <img src={like} alt=""/>
+                    </button>
+                    <img src={comment} alt=""/>
+                    <img src={send} alt=""/>
+                  </div>
+    
+                  <strong>{post.likes}</strong>
+    
+                  <p>
+                    {post.description}
+                    <span>{post.hashtags}</span>
+                  </p>
                 </footer>
-
-            </article>
+    
+              </article>
+              )) }
 
         </section>
     );

@@ -6,7 +6,7 @@ const fs = require('fs');
 
 module.exports = {
     async index(req, res) {
-        const post = await Post.find().sort('-createdAt');
+        const posts = await Post.find().sort('-createdAt');
 
         return res.json(posts);
     },
@@ -17,6 +17,7 @@ module.exports = {
 
         const [name] = image.split('.');
         const fileName = `${name}.jpg`;
+
 
         await sharp(req.file.path)
             .resize(500)
