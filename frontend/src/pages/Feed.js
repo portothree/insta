@@ -20,6 +20,14 @@ class Feed extends Component {
         this.setState({ feed: response.data })
     }
 
+    registerToSocket = () => {
+        const socket = io('http://localhost:3333');
+    
+        socket.on('post', newPost => {
+          this.setState({ feed: [newPost, ...this.state.feed] })
+        })
+      }
+
   render() {
     return (
         <section id="post-list">
